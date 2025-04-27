@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basit Tıklama Oyunu</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <style>
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f0f0; }
+        canvas { border: 2px solid black; }
+    </style>
+</head>
+<body>
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        const game = new Phaser.Game(config);
+        let target, score = 0, scoreText;
+
+        function preload() {
+            this.load.image('target', 'https://labs.phaser.io/assets/sprites/asteroid.png'); // Örnek sprite
+        }
+
+        function create() {
+            target = this.add.sprite(400, 300, 'target').setInteractive();
+            target.setScale(0.5);
+            scoreText = this.add.text(16, 16, 'Puan: 0', { fontSize: '32px', color: '#000' });
+
+            target.on('pointerdown', () => {
+                score += 10;
+                scoreText.setText('Puan: ' + score);
+                target.setPosition(Phaser.Math.Between(50, 750), Phaser.Math.Between(50, 550));
+            });
+        }
+
+        function update() {
+            // Ekstra dinamizm için hedefi yavaşça hareket ettirebiliriz
+            target.x += Phaser.Math.Between(-2, 2);
+            target.y += Phaser.Math.Between(-2, 2);
+        }
+    </script>
+</body>
+</html>
